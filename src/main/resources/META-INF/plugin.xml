@@ -71,7 +71,7 @@
     </tr>
     <tr>
         <td><strong>Quick documentation</strong></td>
-        <td>❌</td>
+        <td>✅</td>
         <td>✅</td>
     </tr>
     <tr>
@@ -134,6 +134,9 @@ Your ratings and feedback are very important. The feature will appear the faster
                 enabledByDefault="true"
                 level="ERROR"
                 shortName="NginxGeoInspection"/>
+        <lang.documentationProvider
+                language="Nginx Configuration"
+                implementationClass="dev.meanmail.codeInsight.documentation.NginxDocumentationProvider"/>
         <errorHandler implementation="com.intellij.diagnostic.JetBrainsMarketplaceErrorReportSubmitter"/>
     </extensions>
 
