@@ -20,6 +20,7 @@ import dev.meanmail.directives.nginx.stream.ssl.ngx_stream_ssl_module
 import dev.meanmail.directives.nginx.stream.ssl.ngx_stream_ssl_preread_module
 import dev.meanmail.directives.nginx.stream.upstream.ngx_stream_upstream_hc_module
 import dev.meanmail.directives.nginx.stream.upstream.ngx_stream_upstream_module
+import dev.meanmail.directives.openresty.http.lua.lua_nginx_module
 import dev.meanmail.psi.DirectiveStmt
 
 enum class ValueType {
@@ -172,6 +173,7 @@ open class Directive(
             *ngx_http_uwsgi_module.directives.toTypedArray(),
             *ngx_http_v2_module.directives.toTypedArray(),
             *ngx_http_xslt_module.directives.toTypedArray(),
+            *lua_nginx_module.directives.toTypedArray(),
 
             // Stream modules
             *ngx_stream_access_module.directives.toTypedArray(),
