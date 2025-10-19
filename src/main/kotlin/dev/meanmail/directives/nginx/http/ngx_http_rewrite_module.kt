@@ -21,7 +21,7 @@ val locationIf = Directive(
             required = true
         )
     ),
-    context = listOf(location, self),
+    context = listOf(server, location),
     module = ngx_http_rewrite_module
 )
 
@@ -36,7 +36,7 @@ val `if` = Directive(
             required = true
         )
     ),
-    context = listOf(server, location, self),
+    context = listOf(server, location),
     module = ngx_http_rewrite_module
 )
 
@@ -57,6 +57,12 @@ val `return` = Directive(
             description = "HTTP status code (e.g., 200, 301, 404) or URL for redirection",
             valueType = ValueType.STRING,
             required = true
+        ),
+        DirectiveParameter(
+            name = "text",
+            description = "Optional response body or secondary redirect target",
+            valueType = ValueType.STRING,
+            required = false
         )
     ),
     context = listOf(server, location, `if`),
@@ -82,7 +88,8 @@ val rewrite = Directive(
         DirectiveParameter(
             name = "flag",
             description = "Optional processing flag (last, break, redirect, permanent)",
-            valueType = ValueType.STRING,
+            valueType = ValueType.ENUM,
+            allowedValues = listOf("last", "break", "redirect", "permanent"),
             required = false
         )
     ),
