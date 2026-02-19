@@ -90,6 +90,43 @@ Tests use JUnit 4 with IntelliJ test infrastructure:
 - **Completion tests** (`NginxCompletionContributorTest`): Inline config with `<caret>` marker, asserts expected completions.
 - **Inspection tests** (`NginxDirectiveInspectionTest`, `NginxGeoInspectionTest`): Fixture `.nginx` files with `<error>` markers for expected diagnostics.
 
+## Debugging Tests
+
+`println()` output from tests is suppressed by default in Gradle. Use `--info` to see it:
+
+```bash
+./gradlew test --tests "dev.meanmail.lexer.NginxLexerTest" --info --rerun
+```
+
+### Reading actual/expected from failed `checkResult` tests
+
+IntelliJ's `FileComparisonFailedError` stores expected/actual in object fields — Gradle CLI just shows "TEXT". Add a temporary `println` before `checkResult` and run with `--info`:
+
+```kotlin
+println("ACTUAL: ${myFixture.editor.document.text.replace("\n", "\\n")}")
+myFixture.checkResult(after)
+```
+
+### Reading IntelliJ Platform source code
+
+The platform sources JAR is in the Gradle cache (`platformType` and `platformVersion` come from `gradle.properties`):
+
+```bash
+# 1. Locate the sources JAR
+find ~/.gradle/caches -name "pycharmPC-*-sources.jar" 2>/dev/null
+
+# 2. Search for a class by name
+jar tf ~/.gradle/caches/.../pycharmPC-2025.3.2-sources.jar | grep -i "SmartEnter"
+
+# 3. Extract and read a specific source file
+unzip -p ~/.gradle/caches/.../pycharmPC-2025.3.2-sources.jar \
+    com/intellij/lang/SmartEnterProcessorWithFixers.java
+
+# 4. Inspect a class hierarchy without source (use the non-sources JAR)
+javap -cp ~/.gradle/caches/.../pycharmPC-2025.3.2.jar \
+    com.intellij.platform.testFramework.core.FileComparisonFailedError
+```
+
 ## Key Details
 
 - JVM target: 21
